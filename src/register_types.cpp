@@ -4,12 +4,16 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
+#include "board/board.hpp"
+
 using namespace godot;
 
 void initialize_example_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+
+	GDREGISTER_CLASS(Board);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {

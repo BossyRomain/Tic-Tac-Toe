@@ -12,13 +12,22 @@ env = SConscript("godot-cpp/SConstruct")
 # - CPPDEFINES are for pre-processor defines
 # - LINKFLAGS are for linking flags
 
+def recursive_glob(src_dir, extensions=[".cpp"]):
+    source_files = []
+    for root, _, files in os.walk(src_dir):
+        for file in files:
+            if os.path.splitext(file)[1] in extensions:
+                source_files.append(os.path.join(root, file))
+    return source_files
+
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/"])
-sources = Glob("src/*.cpp")
+# sources = Glob("src/*.cpp")
+sources = recursive_glob("src")
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        "demo/bin/libgdexample.{}.{}.framework/libgdexample.{}.{}".format(
+        "tic_tac_toe/bin/libtic_tac_toe.{}.{}.framework/libtic_tac_toe.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
@@ -26,17 +35,17 @@ if env["platform"] == "macos":
 elif env["platform"] == "ios":
     if env["ios_simulator"]:
         library = env.StaticLibrary(
-            "demo/bin/libgdexample.{}.{}.simulator.a".format(env["platform"], env["target"]),
+            "tic_tac_toe/bin/libtic_tac_toe.{}.{}.simulator.a".format(env["platform"], env["target"]),
             source=sources,
         )
     else:
         library = env.StaticLibrary(
-            "demo/bin/libgdexample.{}.{}.a".format(env["platform"], env["target"]),
+            "tic_tac_toe/bin/libtic_tac_toe.{}.{}.a".format(env["platform"], env["target"]),
             source=sources,
         )
 else:
     library = env.SharedLibrary(
-        "demo/bin/libgdexample{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "tic_tac_toe/bin/libtic_tac_toe{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 
